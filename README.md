@@ -1,6 +1,9 @@
 ## **Simple Checklist Plugin for Redmine**
 
-<img width="1694" height="304" alt="Redmine_Simple_Checklist_Capture" src="https://github.com/user-attachments/assets/e03bb880-07e0-4282-bf46-c78b26425518" />
+<img width="467" height="192" alt="Screenshot_20260207_131540" src="https://github.com/user-attachments/assets/d85cf54b-0183-43cd-970c-a6f8c02467f5" />
+
+
+##
 
 A lightweight checklist plugin for Redmine 6.x. This plugin allows you to add, complete, and delete checklist items directly from the issue page without reloading.
 
