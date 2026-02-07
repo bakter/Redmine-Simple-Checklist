@@ -21,6 +21,10 @@ Download or copy the plugin files into your Redmine plugins directory:
 
 /path/to/redmine/plugins
 
+rename the folder:
+
+redmine_simple_checklist
+
 2. Install Dependencies
 
 Run bundle from the Redmine root directory:
