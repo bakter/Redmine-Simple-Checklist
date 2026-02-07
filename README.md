@@ -24,11 +24,7 @@ Ruby: 3.x
 
 Download or copy the plugin files into your Redmine plugins directory:
 
-/path/to/redmine/plugins
-
-rename the folder:
-
-redmine_simple_checklist
+/path/to/redmine/plugins/redmine_simple_checklist
 
 2. Install Dependencies
 
