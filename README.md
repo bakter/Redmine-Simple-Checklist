@@ -1,6 +1,6 @@
 ## **Simple Checklist Plugin for Redmine**
 
-<img width="467" height="192" alt="Screenshot_20260207_183213" src="https://github.com/user-attachments/assets/9bc4dfb3-f742-4d9b-bd24-3cc43383ccb2" />
+<img width="467" height="192" alt="Screenshot_20260207_183403" src="https://github.com/user-attachments/assets/356eb359-324a-4b67-b260-7e94cc7fa619" />
 
 ##
 
