@@ -39,7 +39,6 @@ Create the necessary database tables:
 bundle exec rake redmine:plugins:migrate NAME=redmine_simple_checklist RAILS_ENV=production
 
 4. Restart Redmine
-Restart your application server (Puma, Unicorn, Passenger, or Thin):
 
 #### **Configuration**
 
