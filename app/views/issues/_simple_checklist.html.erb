@@ -1,0 +1,109 @@
+<style>
+  /* Fixed width (50%) for the list and the input field */
+  .checklist-container { max-width: 50%; }
+
+  .checklist-item-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+    padding: 2px 0;
+    border-bottom: 1px id #f4f4f4;
+  }
+
+  .checklist-text { flex-grow: 1; font-size: 1em; margin-left: 8px; margin-top: 4px;}
+
+  .checklist-delete-icon {
+    fill: #d33;
+    cursor: pointer;
+    transition: transform 0.2s, fill 0.2s;
+    flex-shrink: 0;
+  }
+
+  .checklist-delete-icon:hover {
+    fill: #a00;
+    transform: scale(1.2);
+  }
+
+  .checklist-checkbox {
+      margin-right: 30px;
+      transform: scale(1.3);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+</style>
+
+<div id="simple_checklist_root" class="checklist-container" style="margin-top: 25px; border-top: 1px solid #ccc; padding-top: 15px;">
+  <h3 style="margin-bottom: 15px;">Checklist</h3>
+
+  <ul id="checklist_ul" style="list-style: none; padding-left: 0;">
+    <% @issue.simple_checklists.each do |item| %>
+      <li id="item_row_<%= item.id %>" class="checklist-item-row">
+        <input type="checkbox" class="checklist-checkbox" <%= 'checked' if item.is_done %>
+               onclick="toggleItem(<%= item.id %>)">
+
+        <span class="checklist-text" style="<%= 'text-decoration: line-through; color: #888;' if item.is_done %>" id="item_text_<%= item.id %>">
+          <%= h(item.subject) %>
+        </span>
+
+        <svg class="checklist-delete-icon" onclick="deleteItem(<%= item.id %>)" width="28" height="28" viewBox="0 0 24 24">
+          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+        </svg>
+      </li>
+    <% end %>
+  </ul>
+
+  <div style="margin-top: 15px; display: flex; gap: 8px;">
+    <input type="text" id="new_item_input" placeholder="Add new item..."  <%# herb:disable html-input-require-autocomplete %>
+           style="flex-grow: 1; padding: 8px; border: 1px solid #ccc; border-radius: 3px;"
+           onkeypress="if(event.keyCode==13) addItem();">
+    <button type="button" onclick="addItem()" class="button" style="padding: 0 15px;">Add</button>
+  </div>
+</div>
+
+<script>
+async function apiCall(url, method, data = {}) {
+    const response = await fetch(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify(data)
+    });
+    return response;
+}
+
+async function addItem() {
+    const input = document.getElementById('new_item_input');
+    const subject = input.value.trim();
+    if (!subject) return;
+
+    const res = await apiCall(`/issues/<%= @issue.id %>/simple_checklists`, 'POST', { checklist: { subject: subject } });
+    if (res.ok) {
+        location.reload();
+    }
+}
+
+async function toggleItem(id) {
+    const res = await apiCall(`/issues/<%= @issue.id %>/simple_checklists/${id}/toggle`, 'POST');
+    if (res.ok) {
+        const data = await res.json();
+        const span = document.getElementById(`item_text_${id}`);
+        span.style.textDecoration = data.is_done ? 'line-through' : 'none';
+        span.style.color = data.is_done ? '#888' : 'inherit';
+    }
+}
+
+async function deleteItem(id) {
+    const res = await apiCall(`/issues/<%= @issue.id %>/simple_checklists/${id}`, 'DELETE');
+
+    if (res.ok) {
+        const element = document.getElementById(`item_row_${id}`);
+        if (element) {
+            element.style.transition = "opacity 0.3s ease";
+            element.style.opacity = "0";
+            setTimeout(() => element.remove(), 300);
+        }
+    }
+}
+</script>
